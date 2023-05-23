@@ -90,6 +90,7 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
     private var destination: Point? = null
     private var shouldSimulateRoute = false
     private var showsEndOfRouteFeedback = false
+    private var showsManeuverView = true
     /**
      * Debug tool used to play, pause and seek route progress events that can be used to produce mocked location updates along the route.
      */
@@ -334,7 +335,7 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
                 ).show()
             },
             {
-                binding.maneuverView.visibility = View.VISIBLE
+                binding.maneuverView.visibility = if (showsManeuverView) View.VISIBLE else View.INVISIBLE;
                 binding.maneuverView.updatePrimaryManeuverTextAppearance(R.style.PrimaryManeuverTextAppearance)
                 binding.maneuverView.updateSecondaryManeuverTextAppearance(R.style.ManeuverTextAppearance)
                 binding.maneuverView.updateSubManeuverTextAppearance(R.style.ManeuverTextAppearance)
@@ -759,6 +760,10 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
 
     fun setShowsEndOfRouteFeedback(showsEndOfRouteFeedback: Boolean) {
         this.showsEndOfRouteFeedback = showsEndOfRouteFeedback
+    }
+
+    fun setShowsManeuverView(showsManeuverView: Boolean) {
+        this.showsManeuverView = showsManeuverView
     }
 
     fun setMute(mute: Boolean) {

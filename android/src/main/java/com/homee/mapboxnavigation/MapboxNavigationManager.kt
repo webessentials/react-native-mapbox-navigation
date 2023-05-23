@@ -82,6 +82,11 @@ class MapboxNavigationManager(var mCallerContext: ReactApplicationContext) : Sim
         view.setShowsEndOfRouteFeedback(showsEndOfRouteFeedback)
     }
 
+    @ReactProp(name = "showsManeuverView")
+    fun setShowsManeuverView(view: MapboxNavigationView, showsManeuverView: Boolean) {
+        view.setShowsManeuverView(showsManeuverView)
+    }
+
     @ReactProp(name = "mute")
     fun setMute(view: MapboxNavigationView, mute: Boolean) {
         view.setMute(mute)
