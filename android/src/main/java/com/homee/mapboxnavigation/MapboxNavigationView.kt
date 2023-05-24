@@ -349,11 +349,19 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
             tripProgressApi.getTripProgress(routeProgress)
         )
 
+        // Access the upcoming maneuver
+        val currentLegProgress: RouteLegProgress? = routeProgress.currentLegProgress
+        val upcomingStep = currentLegProgress?.upcomingStep
+        val maneuverType = upcomingStep?.maneuver()?.type()
+        val maneuverModifier = upcomingStep?.maneuver()?.modifier()
+
         val event = Arguments.createMap()
         event.putDouble("distanceTraveled", routeProgress.distanceTraveled.toDouble())
         event.putDouble("durationRemaining", routeProgress.durationRemaining.toDouble())
         event.putDouble("fractionTraveled", routeProgress.fractionTraveled.toDouble())
         event.putDouble("distanceRemaining", routeProgress.distanceRemaining.toDouble())
+        event.putString("maneuverType", maneuverType)
+        event.putString("maneuverModifier", maneuverModifier)
         context
             .getJSModule(RCTEventEmitter::class.java)
             .receiveEvent(id, "onRouteProgressChange", event)
@@ -590,7 +598,7 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
 
         // initialize view interactions
         binding.stop.setOnClickListener {
-//            clearRouteAndStopNavigation() // TODO: figure out how we want to address this since a user cannot reinitialize a route once it is canceled.
+            // clearRouteAndStopNavigation() // TODO: figure out how we want to address this since a user cannot reinitialize a route once it is canceled.
             val event = Arguments.createMap()
             event.putString("onCancelNavigation", "Navigation Closed")
             context
