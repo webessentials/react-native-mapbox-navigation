@@ -303,6 +303,7 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
             val event = Arguments.createMap()
             event.putDouble("longitude", enhancedLocation.longitude)
             event.putDouble("latitude", enhancedLocation.latitude)
+            event.putDouble("bearing", enhancedLocation.bearing.toDouble())
             context
                 .getJSModule(RCTEventEmitter::class.java)
                 .receiveEvent(id, "onLocationChange", event)
@@ -354,12 +355,14 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
         val upcomingStep = currentLegProgress?.upcomingStep
         val maneuverType = upcomingStep?.maneuver()?.type()
         val maneuverModifier = upcomingStep?.maneuver()?.modifier()
+        val maneuverDistanceRemaining = currentLegProgress?.currentStepProgress?.distanceRemaining?.toDouble() ?: 0.0
 
         val event = Arguments.createMap()
         event.putDouble("distanceTraveled", routeProgress.distanceTraveled.toDouble())
         event.putDouble("durationRemaining", routeProgress.durationRemaining.toDouble())
         event.putDouble("fractionTraveled", routeProgress.fractionTraveled.toDouble())
         event.putDouble("distanceRemaining", routeProgress.distanceRemaining.toDouble())
+        event.putDouble("maneuverDistanceRemaining", maneuverDistanceRemaining)
         event.putString("maneuverType", maneuverType)
         event.putString("maneuverModifier", maneuverModifier)
         context
