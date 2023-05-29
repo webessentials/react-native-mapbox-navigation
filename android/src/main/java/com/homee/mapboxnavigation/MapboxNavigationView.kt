@@ -88,6 +88,7 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
 
     private var origin: Point? = null
     private var destination: Point? = null
+    private var waypoints: List<Point?> = listOf()
     private var shouldSimulateRoute = false
     private var showsEndOfRouteFeedback = false
     private var showsManeuverView = true
@@ -668,6 +669,7 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
                     .applyDefaultNavigationOptions()
                     .applyLanguageAndVoiceUnitOptions(context)
                     .coordinatesList(listOf(origin, destination))
+                    .coordinatesList(listOf(origin) + waypoints.orEmpty() + listOf(destination))
                     .profile(DirectionsCriteria.PROFILE_DRIVING)
                     .steps(true)
                     .build(),
@@ -779,5 +781,9 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
 
     fun setMute(mute: Boolean) {
         this.isVoiceInstructionsMuted = mute
+    }
+
+    fun setWayPoints(waypoints: List<Point?>) {
+        this.waypoints = waypoints
     }
 }

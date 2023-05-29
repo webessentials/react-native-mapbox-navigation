@@ -91,4 +91,15 @@ class MapboxNavigationManager(var mCallerContext: ReactApplicationContext) : Sim
     fun setMute(view: MapboxNavigationView, mute: Boolean) {
         view.setMute(mute)
     }
+
+    @ReactProp(name = "waypoints")
+    fun setWayPoints(view: MapboxNavigationView, sources: ReadableArray?) {
+        val listOfMidWayPoints: MutableList<Point?> = mutableListOf()
+        if (sources != null) {
+            for (i in 0 until sources.size()) {
+                listOfMidWayPoints.add(Point.fromLngLat(sources.getArray(i).getDouble(0), sources.getArray(i).getDouble(1)))
+            }
+        }
+        view.setWayPoints(listOfMidWayPoints.orEmpty())
+    }
 }

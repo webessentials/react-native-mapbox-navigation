@@ -6,6 +6,7 @@ declare type OnLocationChangeEvent = {
     nativeEvent?: {
         latitude: number;
         longitude: number;
+        bearing: number;
     };
 };
 declare type OnRouteProgressChangeEvent = {
@@ -14,6 +15,9 @@ declare type OnRouteProgressChangeEvent = {
         durationRemaining: number;
         fractionTraveled: number;
         distanceRemaining: number;
+        maneuverModifier: string;
+        maneuverType: string;
+        maneuverDistanceRemaining: number;
     };
 };
 declare type OnErrorEvent = {
@@ -24,7 +28,9 @@ declare type OnErrorEvent = {
 export interface IMapboxNavigationProps {
     origin: Coordinate;
     destination: Coordinate;
+    waypoints?: Coordinate[];
     shouldSimulateRoute?: boolean;
+    showsManeuverView?: boolean;
     onLocationChange?: (event: OnLocationChangeEvent) => void;
     onRouteProgressChange?: (event: OnRouteProgressChangeEvent) => void;
     onError?: (event: OnErrorEvent) => void;
