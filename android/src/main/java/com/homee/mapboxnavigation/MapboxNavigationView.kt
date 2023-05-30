@@ -672,6 +672,7 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
                     .coordinatesList(listOf(origin) + waypoints.orEmpty() + listOf(destination))
                     .profile(DirectionsCriteria.PROFILE_DRIVING)
                     .steps(true)
+                    .enableRefresh(false)
                     .build(),
                 object : RouterCallback {
                     override fun onRoutesReady(
