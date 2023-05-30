@@ -625,6 +625,9 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
         // set initial sounds button state
         binding.soundButton.unmute()
 
+        // hide stop navigation button
+        binding.stop.visibility = View.INVISIBLE
+
         // start the trip session to being receiving location updates in free drive
         // and later when a route is set also receiving route progress updates
         mapboxNavigation.startTripSession()
