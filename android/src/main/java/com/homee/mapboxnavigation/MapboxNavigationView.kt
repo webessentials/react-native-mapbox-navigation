@@ -672,9 +672,9 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
                 RouteOptions.builder()
                     .applyDefaultNavigationOptions()
                     .applyLanguageAndVoiceUnitOptions(context)
-                    .coordinatesList(listOf(origin, destination))
                     .coordinatesList(listOf(origin) + waypoints.orEmpty() + listOf(destination))
-                    .profile(DirectionsCriteria.PROFILE_DRIVING)
+                    .overview(DirectionsCriteria.OVERVIEW_FULL)
+                    .profile(DirectionsCriteria.PROFILE_WALKING)
                     .steps(true)
                     .enableRefresh(false)
                     .build(),
