@@ -359,6 +359,7 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
         val maneuverDistanceRemaining = currentLegProgress?.currentStepProgress?.distanceRemaining?.toDouble() ?: 0.0
 
         val event = Arguments.createMap()
+        event.putInt("remainingWaypoints", routeProgress.remainingWaypoints)
         event.putDouble("distanceTraveled", routeProgress.distanceTraveled.toDouble())
         event.putDouble("durationRemaining", routeProgress.durationRemaining.toDouble())
         event.putDouble("fractionTraveled", routeProgress.fractionTraveled.toDouble())

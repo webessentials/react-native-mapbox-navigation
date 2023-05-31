@@ -11,13 +11,14 @@ declare type OnLocationChangeEvent = {
 };
 declare type OnRouteProgressChangeEvent = {
     nativeEvent?: {
+        remainingWaypoints: number;
         distanceTraveled: number;
         durationRemaining: number;
         fractionTraveled: number;
         distanceRemaining: number;
+        maneuverDistanceRemaining: number;
         maneuverModifier: string;
         maneuverType: string;
-        maneuverDistanceRemaining: number;
     };
 };
 declare type OnErrorEvent = {
