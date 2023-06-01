@@ -23,6 +23,13 @@ import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.animation.camera
 import com.mapbox.maps.plugin.locationcomponent.location
+import com.mapbox.maps.plugin.annotation.annotations
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
+import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
+import com.mapbox.maps.plugin.annotation.generated.CircleAnnotationOptions
+import com.mapbox.maps.plugin.annotation.generated.createCircleAnnotationManager
+import com.mapbox.maps.plugin.annotation.generated.CircleAnnotationManager
 import com.mapbox.navigation.base.TimeFormat
 import com.mapbox.navigation.base.extensions.applyDefaultNavigationOptions
 import com.mapbox.navigation.base.extensions.applyLanguageAndVoiceUnitOptions
@@ -172,6 +179,35 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
             110.0 * pixelDensity,
             40.0 * pixelDensity
         )
+    }
+
+    private fun addMarkerToWayPoints() {
+        val annotationApi = binding.mapView?.annotations
+        val circleAnnotationManager = annotationApi.createCircleAnnotationManager(binding.mapView)
+
+        for (i in 1..waypoints.size) {
+            val circleAnnotationOptions: CircleAnnotationOptions = CircleAnnotationOptions()
+                .withPoint(waypoints[i - 1]!!)
+                .withCircleRadius(8.0)
+                .withCircleColor("#e8243c")
+                .withCircleStrokeWidth(2.0)
+                .withCircleStrokeColor("#ffffff")
+            circleAnnotationManager?.create(circleAnnotationOptions)
+        }
+    }
+
+    private fun addTextToWayPoints(){
+        val annotationApi = binding.mapView?.annotations
+        val pointAnnotationManager = annotationApi.createPointAnnotationManager(binding.mapView)
+
+        for (i in 1..waypoints.size) {
+            val pointAnnotationOptions: PointAnnotationOptions = PointAnnotationOptions()
+                .withPoint(waypoints[i - 1]!!)
+                .withTextField(i.toString())
+                .withTextColor("#ffffff")
+                .withTextSize(12.0)
+            pointAnnotationManager?.create(pointAnnotationOptions)
+        }
     }
 
     /**
@@ -598,7 +634,13 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
         setCameraPositionToOrigin()
         // load map style
         mapboxMap.loadStyleUri(
-            Style.MAPBOX_STREETS
+            Style.MAPBOX_STREETS,
+            object : Style.OnStyleLoaded {
+                override fun onStyleLoaded(style: Style) {
+                    addMarkerToWayPoints()
+                    addTextToWayPoints()
+                }
+            }
         )
 
         // initialize view interactions
@@ -672,6 +714,7 @@ class MapboxNavigationView(private val context: ThemedReactContext, private val 
                 RouteOptions.builder()
                     .applyDefaultNavigationOptions()
                     .applyLanguageAndVoiceUnitOptions(context)
+                    .coordinatesList(listOf(origin, destination))
                     .coordinatesList(listOf(origin) + waypoints.orEmpty() + listOf(destination))
                     .overview(DirectionsCriteria.OVERVIEW_FULL)
                     .profile(DirectionsCriteria.PROFILE_WALKING)
